@@ -1,0 +1,33 @@
+// Variables
+
+// Colors
+$colors: (
+  white: #fff,
+  gray-light: #efefef,
+  gray: #d1d1d1,
+  gray-dark: #808080,
+  black: #333,
+  red: #ec433c,
+  maroon: #a6070f,
+  purple: #a42887,
+  yellow: #d7af42,
+  yellow-light: #fef178,
+  blue: #2a48ec,
+  blue-dark: #233db7,
+  green: #2bb13d,
+  turquoise: #28907d
+);
+
+@function color($color-name) {
+  @return map-get($colors, $color-name);
+}
+
+// Brand Swatches
+// $brand-main: ;
+// $brand-secondary: ;
+
+// Breakpoints
+$bpSm: 30em; // 480px
+$bpMd: 43.75em; // 700px
+$bpLrg: 62.5em; // 1000px
+$bpHuge: 187.5em; // 3000px
