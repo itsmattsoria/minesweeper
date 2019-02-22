@@ -369,37 +369,78 @@ img {
 }
 
 .wrap {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 10px;
-  max-width: 1600px;
+  text-align: center;
   position: relative;
+  display: inline-block;
 }
 
-#scoreboard .reset {
-  border-radius: 2px;
+.top {
+  border: 6px solid #e3e3e3;
+  background-color: #e3e3e3;
+}
+
+#scoreboard {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding-bottom: 12px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+#scoreboard .select-wrap {
+  font-weight: 700;
+  vertical-align: top;
+  display: inline-block;
+}
+#scoreboard .select-wrap select {
+  margin: 0;
+  height: 36px;
+  border-radius: 0;
+  border-width: 3px;
+  border-style: solid;
   background-color: #d1d1d1;
-  border: 2px inset #ebebeb;
+  border-color: white #9e9e9e #9e9e9e white;
+}
+#scoreboard .select-wrap select:hover, #scoreboard .select-wrap select:focus {
+  backgroudn-color: #ebebeb;
+}
+#scoreboard .reset {
+  padding: 0 4px;
+  font-size: 24px;
+  cursor: pointer;
+  font-weight: 700;
+  line-height: 30px;
+  border-width: 3px;
+  border-style: solid;
+  background-color: #d1d1d1;
+  border-color: white #9e9e9e #9e9e9e white;
 }
 #scoreboard .reset:hover, #scoreboard .reset:focus {
+  outline: none;
   background-color: #ebebeb;
 }
 #scoreboard .counter {
-  padding: 2px 4px;
+  padding: 0 4px;
   color: #ec433c;
+  border: 3px inset;
+  line-height: 30px;
   letter-spacing: .08em;
   display: inline-block;
   background: #333;
   text-shadow: 0 0 2px #ec433c;
 }
+#scoreboard .counter:first-of-type {
+  margin-right: 20px;
+}
+#scoreboard .counter:last-of-type {
+  margin-left: 20px;
+}
 
 #grid {
-  margin: 20px auto;
+  margin: 0 auto;
   position: relative;
-  border-style: solid;
   display: inline-block;
-  border-width: 1px 2px 2px 1px;
-  border-color: #919191;
 }
 #grid ::-moz-selection {
   background-color: transparent;
@@ -537,6 +578,7 @@ img {
 }
 
 #leaderboard {
+  margin-top: 20px;
   text-align: center;
 }
 #leaderboard h4 {
@@ -578,6 +620,10 @@ img {
 
 .cell.gray-light {
   color: #efefef;
+}
+
+.cell.gray-mid {
+  color: #e3e3e3;
 }
 
 .cell.gray {

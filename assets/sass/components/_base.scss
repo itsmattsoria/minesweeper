@@ -30,42 +30,80 @@ img {
 }
 
 .wrap {
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 10px;
-  max-width: 1600px;
+  text-align: center;
   position: relative;
+  display: inline-block;
 }
 
 $cellSize: 24px;
 
+.top {
+  border: 6px solid color(gray-mid);
+  background-color: color(gray-mid);
+}
+
 #scoreboard {
+  display: flex;
+  padding-bottom: 12px;
+  justify-content: space-between;
+
+  .select-wrap {
+    font-weight: 700;
+    vertical-align: top;
+    display: inline-block;
+    select {
+      margin: 0;
+      height: 36px;
+      border-radius: 0;
+      border-width: 3px;
+      border-style: solid;
+      background-color: color(gray);
+      border-color: lighten(color(gray), 20%) darken(color(gray), 20%) darken(color(gray), 20%) lighten(color(gray), 20%);
+      &:hover,
+      &:focus {
+        backgroudn-color: lighten(color(gray), 10%);
+      }
+    }
+  }
+
   .reset {
-    border-radius: 2px;
+    padding: 0 4px;
+    font-size: 24px;
+    cursor: pointer;
+    font-weight: 700;
+    line-height: 30px;
+    border-width: 3px;
+    border-style: solid;
     background-color: color(gray);
-    border: 2px inset lighten(color(gray), 10%);
+    border-color: lighten(color(gray), 20%) darken(color(gray), 20%) darken(color(gray), 20%) lighten(color(gray), 20%);
     &:hover,
     &:focus {
+      outline: none;
       background-color: lighten(color(gray), 10%);
     }
   }
   .counter {
-    padding: 2px 4px;
+    padding: 0 4px;
     color: color(red);
+    border: 3px inset;
+    line-height: 30px;
     letter-spacing: .08em;
     display: inline-block;
     background: color(black);
     text-shadow: 0 0 2px rgba(color(red),1);
+    &:first-of-type {
+      margin-right: 20px;
+    }
+    &:last-of-type {
+      margin-left: 20px;
+    }
   }
 }
 
 #grid {
-  margin: 20px auto;
+  margin: 0 auto;
   position: relative;
-  border-style: solid;
   display: inline-block;
-  border-width: 1px 2px 2px 1px;
-  border-color: darken(color(gray), 25%);
 
   ::selection {
     background-color: transparent;
@@ -223,6 +261,7 @@ $cellSize: 24px;
 
 // High Score Board
 #leaderboard {
+  margin-top: 20px;
   text-align: center;
 
   h4 {

@@ -2,6 +2,8 @@ var Main = (function($) {
 
   var $body,
       $document,
+      $board,
+      $grid,
       timer,
       time,
       unstarted,
@@ -21,7 +23,8 @@ var Main = (function($) {
     }
 
     // Start Minesweeper
-    var $grid = $('#grid');
+    $board = $('#board');
+    $grid = $('#grid');
     var $timer = $('#timer');
     var $mineCounter = $('#minecounter');
     var $levelSelect = $('#level');
@@ -45,9 +48,9 @@ var Main = (function($) {
 
     var countColors = {0: '', 1: 'blue', 2: 'green', 3: 'red', 4: 'blue-dark', 5: 'maroon', 6: 'turquoise', 7: 'purple', 8: 'gray-dark'};
 
-    var time = 0;
-    var timer = false;
-    var unstarted = true;
+    time = 0;
+    timer = false;
+    unstarted = true;
     var statusIndicator = '<div class="status-indicator"></div>';
 
     // Check for existing high score
@@ -174,7 +177,10 @@ var Main = (function($) {
     // Set initially
     setBoard(level);
     // Set on reset
-    $('html').on('click', '.reset', function() {
+    $('html').on('mousedown', '.reset', function() {
+      $(this).text('😮');
+    }).on('mouseup', '.reset', function() {
+      $(this).text('🙂');
       stopTimer();
       level = $levelSelect.val();
       setBoard(level);
@@ -240,7 +246,7 @@ var Main = (function($) {
           $cell.removeClass('flagged');
           $cell.addClass('maybe');
           mineTally++;
-          $mineCounter.html(mineTally);
+          updateMinecounter(mineTally);
         } else if ($cell.is('.maybe')) {
           $cell.removeClass('maybe');
           var flag = $cell.find('.flag');
@@ -249,7 +255,7 @@ var Main = (function($) {
           $cell.addClass('flagged');
           $cell.append('<span class="flag"></span>');
           mineTally--;
-          $mineCounter.html(mineTally);
+          updateMinecounter(mineTally);
         }
         // If Revealing
       } else if (action === 'reveal') {
@@ -268,6 +274,15 @@ var Main = (function($) {
         }
 
         clearClick($cell);
+      }
+    }
+
+    // Update Minecounter
+    function updateMinecounter(mineTally) {
+      if (mineTally < 10) {
+        $mineCounter.html('0'+mineTally);
+      } else {
+        $mineCounter.html(mineTally);
       }
     }
 
@@ -390,7 +405,7 @@ var Main = (function($) {
 
     function populateHighScore(level, highScore, highlight) {
       if (!$('#leaderboard').length) {
-        $grid.after('<div id="leaderboard"><h4>High Scores</h4><ul><li class="beginner"></li><li class="intermediate"></li><li class="expert"></li></ul><div><button id="score-reset" class="score-reset">Clear Scores</button></div></div>');
+        $board.find('.bottom').append('<div id="leaderboard"><h4>High Scores</h4><ul><li class="beginner"></li><li class="intermediate"></li><li class="expert"></li></ul><div><button id="score-reset" class="score-reset">Clear Scores</button></div></div>');
       }
       if (highlight === true) {
         $('#leaderboard .highlight:not(.'+level+')').removeClass('highlight');
@@ -413,9 +428,9 @@ var Main = (function($) {
       var action = 'reveal';
       var $cell = $(this);
 
-      if (e.altKey) {
+      if (e.altKey || e.which === 3) {
         action = 'flag';
-      } else if (e.shiftKey) {
+      } else if (e.shiftKey || e.which === 1 & e.which === 3) {
         action = 'clear';
       }
 
