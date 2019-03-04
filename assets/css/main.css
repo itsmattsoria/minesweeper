@@ -354,6 +354,10 @@ body {
   font-family: 'Space Mono', monospace;
 }
 
+h1 {
+  margin: 0 0 32px;
+}
+
 p {
   font-size: 1em;
   line-height: 1.25em;
@@ -372,6 +376,24 @@ img {
   text-align: center;
   position: relative;
   display: inline-block;
+}
+
+.legend {
+  font-size: 14px;
+  margin: 0 auto 32px;
+}
+.legend h4,
+.legend p {
+  margin: 0 0 6px;
+}
+.legend code {
+  background: #e3e3e3;
+}
+.legend code .key {
+  color: #ec433c;
+}
+.legend code .click {
+  color: #2a48ec;
 }
 
 .top {
@@ -575,6 +597,9 @@ img {
 #grid .cell.incorrect .flag::after {
   -webkit-transform: rotate(45deg);
           transform: rotate(45deg);
+}
+#grid .cell.mousedown {
+  border: none;
 }
 
 #leaderboard {

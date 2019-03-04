@@ -15,6 +15,10 @@ body {
   font-family: 'Space Mono', monospace;
 }
 
+h1 {
+  margin: 0 0 32px;
+}
+
 p {
   font-size: 1em;
   line-height: 1.25em;
@@ -36,6 +40,24 @@ img {
 }
 
 $cellSize: 24px;
+
+.legend {
+  font-size: 14px;
+  margin: 0 auto 32px;
+  h4,
+  p {
+    margin: 0 0 6px;
+  }
+  code {
+    background: color(gray-mid);
+    .key {
+      color: color(red);
+    }
+    .click {
+      color: color(blue);
+    }
+  }
+}
 
 .top {
   border: 6px solid color(gray-mid);
@@ -255,6 +277,11 @@ $cellSize: 24px;
           transform: rotate(45deg);
         }
       }
+    }
+
+    // On mousedown
+    &.mousedown {
+      border: none;
     }
   }
 }

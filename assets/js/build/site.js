@@ -101,16 +101,58 @@ var Main = (function($) {
         }
         $grid.append('<div class="row">'+newCells+'</div>');
       }
-      $rows = $('.row');
 
-      var $freeCells = $('.cell');
+      // Set Minecounter
+      mineTally = mines;
+      $mineCounter.html(mineTally);
+
+      // Set Timer
+      resetTimer();
+    }
+
+    // Set initially
+    setBoard(level);
+    // Set on reset
+    $('html').on('mousedown', '.reset', function() {
+      $(this).text('😮');
+    }).on('mouseup', '.reset', function() {
+      $(this).text('🙂');
+      stopTimer();
+      level = $levelSelect.val();
+      setBoard(level);
+    });
+    // Set when clicking status indicator
+    $('html').on('click', '.status-indicator', function() {
+      level = $levelSelect.val();
+      setBoard(level);
+    });
+    // Set on level change
+    $levelSelect.on('change', function() {
+      stopTimer();
+      resetTimer();
+      level = $levelSelect.val();
+      setBoard(level);
+    });
+
+    // Lay Mines
+    function layMines(level, clickedCellIndex) {
+      $rows = $('.row');
+      var freeCells = $('.cell');
+      var takenCells = [clickedCellIndex];
+      console.log(clickedCellIndex);
 
       // Lay Mines
       for (m=0;m<mines;m++) {
-        var mineCell = Math.floor(Math.random() * Math.floor($freeCells.length));
-        $($freeCells[mineCell]).addClass('mine');
-        $freeCells.splice(mineCell,1);
+        var mineCell = Math.floor(Math.random() * Math.floor(freeCells.length));
+        // If it happens to be the clicked cell, skip it
+        if ($.inArray(mineCell, takenCells) > -1) {
+          m--;
+          continue;
+        }
+        takenCells.push(mineCell);
+        $(freeCells[mineCell]).addClass('mine');
       }
+      console.log(takenCells);
 
       // Identify Cell Numbers
       var $cells = $('.cell');
@@ -171,43 +213,13 @@ var Main = (function($) {
           $cell.addClass('zero');
         }
       }
-
-      // Set Minecounter
-      mineTally = mines;
-      $mineCounter.html(mineTally);
-
-      // Set Timer
-      resetTimer();
     }
 
-    // Set initially
-    setBoard(level);
-    // Set on reset
-    $('html').on('mousedown', '.reset', function() {
-      $(this).text('😮');
-    }).on('mouseup', '.reset', function() {
-      $(this).text('🙂');
-      stopTimer();
-      level = $levelSelect.val();
-      setBoard(level);
-    });
-    // Set when clicking status indicator
-    $('html').on('click', '.status-indicator', function() {
-      level = $levelSelect.val();
-      setBoard(level);
-    });
-    // Set on level change
-    $levelSelect.on('change', function() {
-      stopTimer();
-      resetTimer();
-      level = $levelSelect.val();
-      setBoard(level);
-    });
-
-    // Click to start timer
-    $('html').off('click', '#grid.unstarted').on('click', '#grid.unstarted', function(e) {
+    // Click cell to start game
+    $('html').off('click', '#grid.unstarted .cell').on('click', '#grid.unstarted .cell', function(e) {
       $grid.removeClass('unstarted');
       if (unstarted && !$(e.target).is('.mine')) {
+        layMines(level, $('.cell').index(this));
         timer = window.setInterval(startTimer, 1000);
         unstarted = false;
       }
@@ -269,8 +281,7 @@ var Main = (function($) {
 
         // If it's a mine you lose!
         if ($cell.is('.mine')) {
-          $grid.addClass('disabled lose');
-          stopTimer();
+          lose();
         }
 
         statusCheck();
@@ -368,7 +379,7 @@ var Main = (function($) {
           } else if ($(adjacentCells[i]).is('.flagged')) {
             correctClear = false;
             $(adjacentCells[i]).addClass('incorrect');
-            $grid.addClass('disabled lose');
+            lose();
           }
         }
 
@@ -397,6 +408,44 @@ var Main = (function($) {
       }
     }
 
+    function lose() {
+      $grid.addClass('disabled lose');
+      stopTimer();
+    }
+
+    // Clicking on a cell
+    $('html').on('click', '.cell', function(e) {
+      e.preventDefault();
+      var action = 'reveal';
+      var $cell = $(this);
+
+      if (e.altKey || e.which === 3) {
+        action = 'flag';
+      } else if ($cell.is('.revealed') || e.which === 1 & e.which === 3) {
+        action = 'clear';
+      }
+
+      if ($cell.is('.flagged') && !e.altKey) {
+        return;
+      }
+
+      if ($cell.is('.zero')) {
+        zeroClick($cell);
+      }
+
+      cellClick($cell, action);
+    });
+
+    // Mouse down on a cell
+    $('html').on('mousedown', '.cell:not(.revealed,.flagged)', function(e) {
+      if (!e.altKey && e.which !== 3) {
+        $(this).addClass('mousedown');
+      }
+    }).on('mouseup mouseleave', '.cell.mousedown', function() {
+      $(this).removeClass('mousedown');
+    });
+
+    // Scoreboard functionality
     function resetHighScore(level, winTime) {
       if (localStorage.getItem(level)) {
         if (winTime < localStorage.getItem(level)) {
@@ -426,30 +475,8 @@ var Main = (function($) {
       $('#leaderboard').remove();
     }
 
+    // Clicking on score reset to clear scores
     $('html').on('click', '#score-reset', clearScores);
-
-    // Clicking on a cell
-    $('html').on('click', '.cell', function(e) {
-      e.preventDefault();
-      var action = 'reveal';
-      var $cell = $(this);
-
-      if (e.altKey || e.which === 3) {
-        action = 'flag';
-      } else if (e.shiftKey || e.which === 1 & e.which === 3) {
-        action = 'clear';
-      }
-
-      if ($cell.is('.flagged') && !e.altKey) {
-        return;
-      }
-
-      if ($cell.is('.zero')) {
-        zeroClick($cell);
-      }
-
-      cellClick($cell, action);
-    });
 
   } // end init()
 
