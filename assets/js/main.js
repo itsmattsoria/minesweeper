@@ -42,6 +42,7 @@ var Main = (function($) {
         mines,
         freeCells,
         mineTally,
+        pauseTime,
         beginnerHighScore = 999,
         intermediateHighScore = 999,
         expertHighScore = 999;
@@ -133,7 +134,6 @@ var Main = (function($) {
       $rows = $('.row');
       var freeCells = $('.cell');
       var takenCells = [clickedCellIndex];
-      console.log(clickedCellIndex);
 
       // Lay Mines
       for (m=0;m<mines;m++) {
@@ -146,7 +146,6 @@ var Main = (function($) {
         takenCells.push(mineCell);
         $(freeCells[mineCell]).addClass('mine');
       }
-      console.log(takenCells);
 
       // Identify Cell Numbers
       var $cells = $('.cell');
@@ -238,6 +237,26 @@ var Main = (function($) {
     function stopTimer() {
       window.clearInterval(timer);
     }
+
+    function pauseTimer() {
+      stopTimer();
+      pauseTime = parseInt($('#timer').html());
+    }
+
+    function unpauseTimer() {
+      time = pauseTime;
+      timer = window.setInterval(startTimer, 1000);
+      pauseTime = false;
+    }
+
+    // Pause when window loses focus
+    $(window).on('blur', function() {
+      pauseTimer();
+    }).on('focus', function() {
+      if (pauseTime) {
+        unpauseTimer();
+      }
+    });
 
     // Check Cell
     function checkCell($cell) {
