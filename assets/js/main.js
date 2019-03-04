@@ -6,21 +6,13 @@ var Main = (function($) {
       $grid,
       timer,
       time,
-      unstarted,
-      $devbox,
-      dev = true;
+      unstarted;
 
   function _init() {
     // Cache some common DOM queries
     $document = $(document);
     $body = $('body');
     $body.addClass('loaded');
-
-    // If dev mode is set
-    if (dev === true) {
-      $body.append('<div id="devbox"></dev>');
-      $devbox = $('#devbox');
-    }
 
     // Start Minesweeper
     $board = $('#board');
@@ -492,28 +484,6 @@ var Main = (function($) {
     $('html').on('click', '#score-reset', clearScores);
 
   } // end init()
-
-  function _printToDev(description, content) {
-    if (dev !== true) {
-      return;
-    }
-
-    if (typeof content === 'string' || typeof content === 'number') {
-      $devbox.append('<p>'+description+': '+content+'</p>');
-    } else if (typeof content.isArray) {
-      for (var i = 0; i < content.length; i++) {
-        $devbox.append('<p>'+description+': '+content[i]+'</p>');
-      }
-    } else if (typeof content === 'object') {
-      $devbox.append('<p>'+description+': '+JSON.stringify(content, null, 4)+'</p>');
-    }
-  }
-
-  function _clearDevBox() {
-    if ($devbox) {
-      $devbox.html('');
-    }
-  }
 
   // Public functions
   return {
