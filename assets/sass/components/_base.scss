@@ -11,12 +11,16 @@ body {
   text-align: center;
   color: color(black);
   padding: 20px 20px 100px;
-  background-color: color(gray-light);
+  background-color: color(white);
   font-family: 'Space Mono', monospace;
 }
 
 h1 {
   margin: 0 0 32px;
+  img {
+    height: 60px;
+    width: 200px;
+  }
 }
 
 p {
@@ -62,6 +66,7 @@ $cellSize: 24px;
 .top {
   border: 6px solid color(gray-mid);
   background-color: color(gray-mid);
+  box-shadow: 3px 3px 0 0 color(black), -3px -3px 0 0 color(black), 3px -3px 0 0 color(black), -3px 3px 0 0 color(black);
 }
 
 #scoreboard {
