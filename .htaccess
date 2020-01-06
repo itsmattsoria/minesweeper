@@ -1,0 +1,5 @@
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{HTTP_HOST} ^minesweeper.mattsoria.com$ [NC]
+RewriteRule ^(.*)$ http://sweeper.mattsoria.com%{REQUEST_URI} [R=301,NC,L,QSA]
+</IfModule>
